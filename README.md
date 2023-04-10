@@ -1,4 +1,6 @@
-# top10
+# Carousel Slider like in Netflix Top 10 webpage
+
+## Made with Vue.js, Tailwind
 
 ## Project setup
 ```
