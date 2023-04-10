@@ -19,7 +19,7 @@
           @touchstart="loop = false" @touchend="loop = true"
           v-if="list!==null">
             <button class="flex flex-col-reverse md:flex-row grow items-stretch justify-between text-center text-stone-50 one-slide
-            transition-all ease-out duration-300"
+            transition-all ease-out duration-300 group"
             :class="{'active': item.active === true, 'lg:w-6 lg:hover:w-32': item.active !== true}"
             :style="`z-index: ${list.length-i};box-shadow: 5px 5px 40px black;`"
             @click="activate(i)"
@@ -37,31 +37,28 @@
                     Watched for <b>{{ item.views }}</b> million hours this week.
                   </span>
                   <p>
-                    <a class="text-red-600 text-xs sm:text-sm md:text-base lg:text-xl underline"
+                    <a class="text-red-600 hover:text-stone-50 text-xs sm:text-sm md:text-base lg:text-xl underline"
                     :href="item.url" target="_blank">
                       Watch now
                     </a>
                   </p>
                 </div>
               </div>
-              <div class="group relative grow bg-cover bg-no-repeat bg-center movie-thumb overflow-hidden"
-                :class="{'active': item.active === true }"
-                :style="getBackground(item)">
-                <div class="h-full md:pb-3 lg:pb-6"
-                :class="{'backdrop-brightness-50 group-hover:backdrop-brightness-75': item.active !== true}"
-                style="width:calc(100% + 1px)">
-                  <div class="absolute top-1.5 right-1 text-right w-full opacity-90 lg:opacity-60 text-white lg:font-bold
-                  text-xs  lg:text-base drop-shadow-md shadow-stone-950 leading-none"
-                  :class="{'hidden': item.active === true }">
-                    {{ i+1 }}
-                  </div>
-                  <div class="absolute bottom-0 left-0 w-full pt-4 pb-2 overflow-hidden pointer-events-none
-                  opacity-0 group-hover:opacity-100 drop-shadow-md
-                  min-w-min"
-                  style="background-image: linear-gradient(transparent 0px, rgba(0, 0, 0, 0.5) 100%);">
-                    <div class="mx-auto text-xs tracking-wider text-center uppercase font-600 hidden lg:block">
-                      {{ item.title }}  
-                    </div>
+              <div class="relative grow bg-cover bg-no-repeat bg-center movie-thumb overflow-hidden"
+                :class="{'active': item.active === true }">
+                <img class="absolute top-0 left-0 object-cover w-full h-full" :src="item.image" alt=""
+                :class="{'opacity-100': item.active === true, 'opacity-40 group-hover:opacity-70': item.active !== true}">
+                <div class="absolute top-1.5 right-1 text-right w-full opacity-90 lg:opacity-60 text-white lg:font-bold
+                text-xs  lg:text-base drop-shadow-md shadow-stone-950 leading-none md:pb-3 lg:pb-6"
+                :class="{'hidden': item.active === true }">
+                  {{ i+1 }}
+                </div>
+                <div class="absolute bottom-0 left-0 w-full pt-4 pb-2 px-2 overflow-hidden pointer-events-none
+                opacity-0 group-hover:opacity-100 drop-shadow-md
+                min-w-min"
+                style="background-image: linear-gradient(transparent 0px, rgba(0, 0, 0, 0.5) 100%);">
+                  <div class="mx-auto text-xs tracking-wider text-center uppercase font-600 hidden lg:block">
+                    {{ item.title }}  
                   </div>
                 </div>
               </div>
@@ -96,7 +93,7 @@ export default {
         // console.log('response', response);
         this.list = response.data.videos;
         this.activate(0);
-        this.rotate();
+        //this.rotate();
       })
       .catch((error) => {
         console.log("error", error);
@@ -127,13 +124,6 @@ export default {
     sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     },
-    getBackground(item) {
-      if (window.innerWidth > 500) {
-        return `background-image: url('${item.thumbs['1920x1080']}');`;
-      } else {
-        return `background-image: url('${item.portrait_thumbs['720x1080']}');`;
-      }
-    }
   }
 }
 </script>
